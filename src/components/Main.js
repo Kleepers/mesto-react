@@ -3,25 +3,27 @@ import React from 'react'
 import Card from "./Card";
 
 export default function Main (props) {
-    const [userName,userNameHandler] = React.useState('')
-    const [userDescription,userDescriptionHandler] = React.useState('')
-    const [userAvatar,userAvatarHandler] = React.useState('')
-    const [cards,cardsHandler] = React.useState([]);
+    const [userName,setUserName] = React.useState('')
+    const [userDescription,setUserDescription] = React.useState('')
+    const [userAvatar,setUserAvatar] = React.useState('')
+    const [cards,setCards] = React.useState([]);
 
     React.useEffect(() => {
         api.getUserInfoApi()
             .then(res => {
-                userNameHandler(res.name);
-                userDescriptionHandler(res.about);
-                userAvatarHandler(res.avatar);
+                setUserName(res.name);
+                setUserDescription(res.about);
+                setUserAvatar(res.avatar);
             })
+            .catch(err => console.log(`Ошибка при получении данных пользователя: ${err}`))
     }, [])
 
     React.useEffect(() => {
         api.getInitialCards()
             .then(res => {
-                cardsHandler(res);
+                setCards(res);
             })
+            .catch(err => console.log(`Ошибка при получении карточек: ${err}`))
     }, [])
 
     return (

@@ -7,29 +7,49 @@ import React from 'react';
 
 export default function App() {
 
-    const [isEditProfilePopupOpen,handleEditProfileClick] = React.useState(false);
-    const [isEditAvatarPopupOpen,handleEditAvatarClick] = React.useState(false);
-    const [isAddPlacePopupOpen,handleAddPlaceClick] = React.useState(false);
-    const [isPlaceDeletePopupOpen,handlePlaceDeletePopupClick] = React.useState(false);
+    function handleEditProfileClick  () {
+        setIsEditProfileOpen(true)
+    }
 
-    const [selectedCard,handleCardClick] = React.useState(false);
+    function handleEditAvatarClick () {
+        setIsEditAvatarPopupOpen(true)
+    }
+
+    function handleAddPlaceClick () {
+        setIsAddPlacePopupOpen(true)
+    }
+
+    function handlePlaceDeletePopupOpen () {
+        setIsPlaceDeletePopupOpen(true)
+    }
+
+    function handleCardClick (card) {
+        setSelectedCard(card)
+    }
+
+    const [isEditProfilePopupOpen,setIsEditProfileOpen] = React.useState(false);
+    const [isEditAvatarPopupOpen,setIsEditAvatarPopupOpen] = React.useState(false);
+    const [isAddPlacePopupOpen,setIsAddPlacePopupOpen] = React.useState(false);
+    const [isPlaceDeletePopupOpen,setIsPlaceDeletePopupOpen] = React.useState(false);
+
+    const [selectedCard,setSelectedCard] = React.useState({name: '', link: ''});
 
     function closeAllPopups () {
-        handleEditProfileClick(false);
-        handleEditAvatarClick(false);
-        handleAddPlaceClick(false);
-        handlePlaceDeletePopupClick(false);
-        handleCardClick(false);
+        setIsEditProfileOpen(false);
+        setIsEditAvatarPopupOpen(false);
+        setIsAddPlacePopupOpen(false);
+        setIsPlaceDeletePopupOpen(false);
+        setSelectedCard({name: '', link: ''});
     }
 
     return (
         <div className="page">
 
             <Header/>
-            <Main onEditProfile={() => handleEditProfileClick(!isEditProfilePopupOpen)}
-                onAddPlace={() => handleAddPlaceClick(!isAddPlacePopupOpen)}
-                onEditAvatar={() => handleEditAvatarClick(!isEditAvatarPopupOpen)}
-                onCardClick={(card) => handleCardClick(card)}
+            <Main onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
+                onEditAvatar={handleEditAvatarClick}
+                onCardClick={handleCardClick}
             />
             <Footer/>
             <PopupWithForm name="edit" title="Редактировать профиль" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>

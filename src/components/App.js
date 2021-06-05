@@ -56,7 +56,7 @@ export default function App() {
     function handleCardLike(card) {
         const isLiked = card.likes.some(i => i._id === currentUser._id);
 
-        api.changeLikeCardStatus(card,!isLiked).then((newCard) => {
+        api.changeLikeCardStatus(card._id,!isLiked).then((newCard) => {
             setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
         })
     }
@@ -89,14 +89,14 @@ export default function App() {
     function handleUpdateUser (formData) {
         api.updateUserInfo(formData)
             .then((res) => {
-                setCurrentUser({name:res.name,about:res.about,avatar:res.avatar});
+                setCurrentUser(res);
                 closeAllPopups();
         })
     }
 
     function handleUpdateAvatar (formData) {
         api.updateUserAvatar(formData).then((res) => {
-            setCurrentUser({name:res.name,about:res.about,avatar:res.avatar});
+            setCurrentUser(res);
             closeAllPopups();
         })
     }

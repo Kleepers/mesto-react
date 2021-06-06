@@ -46,11 +46,12 @@ export default function App() {
     const [cards,setCards] = React.useState([]);
 
     React.useEffect(() => {
-        api.getInitialCards()
-            .then(res => {
-                setCards(res);
+        Promise.all([api.getUserInfoApi(),api.getInitialCards()])
+            .then(([userData,initialCards]) => {
+                setCards(initialCards);
+                setCurrentUser(userData);
             })
-            .catch(err => console.log(`Ошибка при получении карточек: ${err}`))
+            .catch(err => console.log(`Ошибка при получении данных: ${err}`))
     }, [])
 
     function handleCardLike(card) {
@@ -59,6 +60,7 @@ export default function App() {
         api.changeLikeCardStatus(card._id,!isLiked).then((newCard) => {
             setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
         })
+            .catch(err => console.log(`Ошибка: ${err}`))
     }
 
     function handleCardDelete(cardToDeleteId) {
@@ -67,16 +69,8 @@ export default function App() {
                 return card._id !== cardToDeleteId;
             }))
         })
+            .catch(err => console.log(`Ошибка: ${err}`))
     }
-
-    React.useEffect(() => {
-        api.getUserInfoApi()
-            .then(res => {
-                setCurrentUser(res);
-            })
-            .catch(err => console.log(`Ошибка при получении данных пользователя: ${err}`))
-    },[])
-
 
     function closeAllPopups () {
         setIsEditProfileOpen(false);
@@ -92,6 +86,7 @@ export default function App() {
                 setCurrentUser(res);
                 closeAllPopups();
         })
+            .catch(err => console.log(`Ошибка: ${err}`))
     }
 
     function handleUpdateAvatar (formData) {
@@ -99,6 +94,7 @@ export default function App() {
             setCurrentUser(res);
             closeAllPopups();
         })
+            .catch(err => console.log(`Ошибка: ${err}`))
     }
 
     function handleAddPlaceSubmit (formData) {
@@ -106,6 +102,7 @@ export default function App() {
             setCards([res,...cards]);
             closeAllPopups();
         })
+            .catch(err => console.log(`Ошибка: ${err}`))
     }
 
     return (

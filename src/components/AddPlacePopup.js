@@ -1,11 +1,16 @@
-import PopupWithForm from "./PopupWithForm";
 import React from "react";
+import PopupWithForm from "./PopupWithForm";
 
 
 export default function AddPlacePopup (props) {
 
     const [name,setName] = React.useState('');
     const [link,setLink] = React.useState('');
+
+    React.useEffect(() => {
+        setName('')
+        setLink('')
+    },[props.isOpen])
 
     function handleNameChange (event) {
         setName(event.target.value);
@@ -21,8 +26,6 @@ export default function AddPlacePopup (props) {
             place: name,
             image: link
         });
-        setName('');
-        setLink('');
     }
 
     return (
